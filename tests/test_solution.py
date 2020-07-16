@@ -26,11 +26,30 @@ def test_calculations_of_simple_and_complex_expressions(solution, input_string, 
 
 input_a = "1 2 3 a + + +"
 input_b = "@ 2 3 4 + - *"
-output = SystemExit
+output_validation = SystemExit
 
 
-@pytest.mark.parametrize("input_string, output", [(input_a, output), (input_b, output)])
-def test_validation_of_input_strings_with_wrong_characters(solution, input_string, output):
+@pytest.mark.parametrize(
+    "input_string, output", [(input_a, output_validation), (input_b, output_validation)]
+)
+def test_validation_of_input_strings_with_wrong_characters(
+    solution, input_string, output
+):
 
-    with pytest.raises(SystemExit) as pytest_wrapped_e:
-        assert solution.input_data_validation(input_string) == pytest_wrapped_e
+    with pytest.raises(SystemExit) as pytest_system_exit:
+        assert solution.input_data_validation(input_string) == pytest_system_exit
+
+
+input_c = "1 2 3 4 + + +"
+input_d = "2 ~"
+output_1 = "calculation"
+output_2 = None
+
+
+@pytest.mark.parametrize(
+    "input_string, output", [(input_c, output_1), (input_d, output_2)]
+)
+def test_detection_of_calculation_and_negation_in_input_string(
+    solution, input_string, output
+):
+    assert solution.check_if_calculation_or_negation(input_string) == output
